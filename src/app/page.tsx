@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
+import { sendAddToCartEvent } from "./actions";
 
 // Types
 type Notification = {
@@ -39,6 +40,18 @@ export default function Home() {
 
   // === Refs for Scroll Reveal ===
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // === Add To Cart Helper (Pixel + CAPI) ===
+  const handleAddToCart = (productName: string, price: number) => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'AddToCart', {
+        content_name: productName,
+        value: price,
+        currency: 'IDR'
+      });
+    }
+    sendAddToCartEvent(productName, price).catch(console.error);
+  };
 
   // === Countdown Logic (3 Hours from first visit) ===
   useEffect(() => {
@@ -317,7 +330,8 @@ export default function Home() {
           </div>
 
           {/* CTA */}
-          <a href={DEFAULT_WA_URL} 
+          <a href={DEFAULT_WA_URL}
+             onClick={() => handleAddToCart("Jersey Koko Ramadhan", 99000)}
              className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full text-base sm:text-lg font-extrabold tracking-wide transition-all shadow-[0_10px_25px_-5px_rgba(37,211,102,0.4)] hover:shadow-[0_15px_35px_-5px_rgba(37,211,102,0.5)] hover:-translate-y-1 w-full sm:w-auto" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 32 32" width="24" height="24" fill="currentColor">
               <path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.742 3.054 9.378L1.054 31.29l6.166-1.964C9.79 30.996 12.788 32 16.004 32 24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.342 22.616c-.39 1.1-1.932 2.014-3.148 2.28-.832.178-1.918.32-5.574-1.198-4.678-1.94-7.69-6.684-7.926-6.994-.226-.31-1.898-2.53-1.898-4.826s1.2-3.424 1.628-3.892c.39-.428 1.036-.642 1.654-.642.2 0 .38.01.54.018.468.02.704.048 1.012.786.39.924 1.34 3.268 1.458 3.506.12.238.238.546.088.856-.14.32-.262.462-.5.73-.238.268-.464.472-.702.76-.22.254-.468.526-.196.994.272.46 1.21 1.996 2.6 3.232 1.786 1.588 3.288 2.082 3.756 2.31.468.228.742.19 1.014-.116.28-.316 1.202-1.398 1.522-1.878.312-.48.632-.396 1.062-.238.436.158 2.762 1.302 3.236 1.54.468.238.782.354.898.55.116.196.116 1.136-.274 2.236z"/>
@@ -363,6 +377,7 @@ export default function Home() {
                 </div>
                 
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Black Red Edition promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Black Red Edition", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -392,6 +407,7 @@ export default function Home() {
                 </div>
                 
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Grey Blue Edition promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Grey Blue Edition", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -420,7 +436,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-red-500">⚠️ Sisa 7 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko White Batik Edition promo Rp99.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko White Batik Edition promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko White Batik Edition", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -449,7 +466,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-brand-500">⚠️ Sisa 19 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Stripe Lengan Pendek promo Rp99.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Stripe Lengan Pendek promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Stripe Lengan Pendek", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -478,7 +496,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-red-500">⚠️ Sisa 10 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Stripe Lengan Panjang promo Rp110.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Stripe Lengan Panjang promo Rp110.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Stripe Lengan Panjang", 110000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -507,7 +526,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-red-500">⚠️ Sisa 8 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Panjang Red Block promo Rp110.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Panjang Red Block promo Rp110.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Lengan Panjang Red Block", 110000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -536,7 +556,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-brand-500">⚠️ Sisa 15 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Pendek Red Block promo Rp99.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Pendek Red Block promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Lengan Pendek Red Block", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -565,7 +586,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-red-500">⚠️ Sisa 5 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Panjang Blue Block promo Rp110.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Panjang Blue Block promo Rp110.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Lengan Panjang Blue Block", 110000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -594,7 +616,8 @@ export default function Home() {
                   <span className="text-[11px] font-bold text-brand-500">⚠️ Sisa 22 pcs!</span>
                 </div>
                 
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Pendek Blue Block promo Rp99.000")}`} 
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Halo kak, saya mau order Jersey Koko Lengan Pendek Blue Block promo Rp99.000")}`}
+                   onClick={() => handleAddToCart("Jersey Koko Lengan Pendek Blue Block", 99000)}
                    className="block w-full text-center bg-[#1e293b] hover:bg-black text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm transition-colors" target="_blank" rel="noreferrer">
                   BELI SEKARANG
                 </a>
@@ -724,7 +747,8 @@ export default function Home() {
             <span className="text-5xl sm:text-6xl font-black text-brand-900">Rp99.000</span>
           </div>
 
-          <a href={DEFAULT_WA_URL} 
+          <a href={DEFAULT_WA_URL}
+             onClick={() => handleAddToCart("Jersey Koko Ramadhan", 99000)}
              className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#128C7E] text-white px-8 sm:px-12 py-4 sm:py-5 rounded-full text-base sm:text-xl font-extrabold tracking-wide transition-all shadow-[0_10px_25px_-5px_rgba(37,211,102,0.4)] hover:-translate-y-1 w-full sm:w-auto mb-6" target="_blank" rel="noreferrer">
             <svg viewBox="0 0 32 32" width="28" height="28" fill="currentColor">
               <path d="M16.004 0h-.008C7.174 0 0 7.176 0 16c0 3.5 1.132 6.742 3.054 9.378L1.054 31.29l6.166-1.964C9.79 30.996 12.788 32 16.004 32 24.826 32 32 24.822 32 16S24.826 0 16.004 0zm9.342 22.616c-.39 1.1-1.932 2.014-3.148 2.28-.832.178-1.918.32-5.574-1.198-4.678-1.94-7.69-6.684-7.926-6.994-.226-.31-1.898-2.53-1.898-4.826s1.2-3.424 1.628-3.892c.39-.428 1.036-.642 1.654-.642.2 0 .38.01.54.018.468.02.704.048 1.012.786.39.924 1.34 3.268 1.458 3.506.12.238.238.546.088.856-.14.32-.262.462-.5.73-.238.268-.464.472-.702.76-.22.254-.468.526-.196.994.272.46 1.21 1.996 2.6 3.232 1.786 1.588 3.288 2.082 3.756 2.31.468.228.742.19 1.014-.116.28-.316 1.202-1.398 1.522-1.878.312-.48.632-.396 1.062-.238.436.158 2.762 1.302 3.236 1.54.468.238.782.354.898.55.116.196.116 1.136-.274 2.236z"/>
