@@ -43,6 +43,7 @@ export default function Home() {
 
   // === Add To Cart Helper (Pixel + CAPI) ===
   const handleAddToCart = (productName: string, price: number) => {
+    const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'AddToCart', {
         content_name: productName,
@@ -50,7 +51,7 @@ export default function Home() {
         currency: 'IDR'
       });
     }
-    sendAddToCartEvent(productName, price).catch(console.error);
+    sendAddToCartEvent(productName, price, ua).catch(console.error);
   };
 
   // === Countdown Logic (3 Hours from first visit) ===

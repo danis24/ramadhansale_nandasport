@@ -2,14 +2,14 @@
 
 import { headers } from "next/headers";
 
-export async function sendAddToCartEvent(productName: string, price: number) {
+export async function sendAddToCartEvent(productName: string, price: number, clientUserAgent: string) {
   const pixelId = "2083660338863687";
   const accessToken = "EAATBK0wejPwBQ1OuN214rxrE7ZCkmJA6hx26kMvi2E1hzZB1SFpWaEwkMyRPf9GyEYsqq3IIu47rPIjvN7zCweJdPMMCChHwBxorqgQsZAGk0KM2VAaZAg7w4zAXhbGMPUkZCLxZCB6YspTwcZCP82dxViRN1yZARWBxRFuHvoRHCMsrqlQGEPKf4qvgZBZBzuxpbSyAZDZD";
   const url = `https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${accessToken}`;
 
   const headerStore = await headers();
-  const userAgent = headerStore.get("user-agent") || "";
-  const ipAddress = headerStore.get("x-forwarded-for") || headerStore.get("x-real-ip") || "127.0.0.1";
+  const ipAddress = headerStore.get("x-forwarded-for")?.split(",")[0]?.trim() || headerStore.get("x-real-ip") || "";
+  const userAgent = clientUserAgent || headerStore.get("user-agent") || "";
 
   const eventData = {
     data: [
